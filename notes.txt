@@ -1,0 +1,44 @@
+The fractal program is simple when we think about it from a computational standpoint. We use a formula to determine it's boundedness. 
+How the program is created in order to allow for multithreading is really interesting and the key problem to this program. 
+
+I've come across two methods of multithreading. 
+
+1. Have one function that calculates every single pixel on the screen based off an x & y coordinate input. The threads will be assigned a section of the screen to print out. 
+
+2. Create a function pointer that is referenced by threads, which will calculate the pixel color at the given pixel location. 
+
+
+void				draw_fractal(t_window *window)
+{
+
+	double pr;
+	double pi;
+	double newRe;
+	double oldRe;
+	double newImg;
+	double oldImg;
+	double zoom = window->zoom;
+	float movex = window->movex;
+	float movey = window->movey;
+	unsigned int color;
+	int c;
+	int i;
+	int j;
+	int iter;
+
+	i = -1;
+	c = 0; 
+	while (++i < window->w_height)
+	{
+		j = -1;
+		while (++j < window->w_width)
+		{
+			pr = 1.5 * (j  - window->w_width / 2) / (.5 * zoom * window->w_width) + movex;
+			pi = (i - window->w_height / 2) / (.5 * zoom * window->w_height) + movey;
+			newRe = oldRe = newImg = oldImg = 0;
+			iter = bounded_iteration(newRe, oldRe, newImg, oldImg, pi, pr);
+			color = color_type(iter);
+			window->pixel_data[j + (i * window->w_width)] = color;
+		}
+	}
+}
