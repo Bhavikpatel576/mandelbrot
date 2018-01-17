@@ -21,6 +21,7 @@ void				usage(void)
 }
 
 /*
+** Code to have windows broken up amoung 16 quadrants
 ** threads[i].tid = i;
 ** threads[i].xO = window->w_width / 4 * (threads[i].tid % 4);
 ** threads[i].yO = window->w_height / 4 * (threads[i].tid / 4);
